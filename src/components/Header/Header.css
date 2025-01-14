@@ -1,0 +1,10 @@
+header {
+    display: flex;
+    justify-content: space-between;
+    gap: 50px;
+    width: 100%;
+    margin-left: 30px;
+    h1 {
+        color: var(--text);
+    }
+}
