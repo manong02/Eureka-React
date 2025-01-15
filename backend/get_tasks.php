@@ -1,4 +1,7 @@
 <?php
+header("Access-Control-Allow-Origin: *"); // Allow all origins
+header('Content-Type: application/json'); // Return JSON
+
 session_start();
 include('db_connection.php');
 
@@ -9,43 +12,31 @@ if (!isset($_SESSION['user_id'])) {
     exit;
 }
 
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
-
-// Set the header to return JSON
-header('Content-Type: application/json');
-
 try {
-    // Query to get tasks from the database using PDO
-    $query = "SELECT tasks.task_id, tasks.title, tasks.description, tasks.due_date as dueDate, 
+    // Query to get tasks from the database
+    $query = "SELECT tasks.task_id, tasks.title, tasks.description, tasks.due_date AS dueDate, 
               tasks.status, subjects.name AS subject_name
               FROM tasks
               JOIN subjects ON tasks.subject_id = subjects.subject_id
-              WHERE tasks.user_id = :user_id"; // Use placeholder for prepared statements
+              WHERE tasks.user_id = :user_id"; // Prepared statement
 
-    // Prepare the statement
+    // Prepare and execute the query
     $stmt = $pdo->prepare($query);
-
-    // Bind the user id parameter
     $stmt->bindParam(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
-
-    // Execute the query
     $stmt->execute();
 
     // Fetch tasks
     $tasks = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    // Check if there are tasks and return them as JSON
+    // Return tasks or an empty array if no tasks
     if ($tasks) {
-        http_response_code(200); // OK
         echo json_encode($tasks);
     } else {
-        http_response_code(404); // Not Found
-        echo json_encode(['message' => 'No tasks found for this user']);
+        echo json_encode([]); // No tasks
     }
 } catch (PDOException $e) {
-    // Handle database errors
-    http_response_code(500); // Internal Server Error
+    // Handle errors
+    http_response_code(500);
     echo json_encode(['error' => 'Database error: ' . $e->getMessage()]);
     exit;
 }

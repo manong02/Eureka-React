@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import './AddTaskOverlay.css';
 
-const AddTaskOverlay = ({ isOpen, onClose }) => {
+const AddTaskOverlay = ({ isOpen, onClose, onTaskCreated }) => {
 
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
@@ -9,10 +9,30 @@ const AddTaskOverlay = ({ isOpen, onClose }) => {
     const [dueDate, setDueDate] = useState('');
 
     const handleSubmit = (e) => {
-        e.preventDefault();
-        console.log({title, description, subjectId, dueDate});
-        onClose();
-    };
+      e.preventDefault();
+  
+      const taskData = { title, description, subjectId, dueDate };
+  
+      fetch("http://localhost:8000/backend/create_task.php", {
+          method: "POST",
+          headers: {
+              "Content-Type": "application/json",
+          },
+          body: JSON.stringify(taskData),
+      })
+      .then(response => response.json()) // assuming the response is JSON
+      .then(data => {
+          if (data.success) {
+              console.log('Task created successfully');
+              onTaskCreated(); //notify homeworkpage to reload tasks
+              onClose(); // Close the overlay after successful task creation
+              // Optionally, you can trigger a function to reload tasks here
+          } else {
+              console.error('Failed to create task:', data.message);
+          }
+      })
+      .catch(error => console.error('Error:', error));
+  };
 
     if(!isOpen) return null; //do not render overlay if not open
 

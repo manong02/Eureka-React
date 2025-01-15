@@ -1,4 +1,5 @@
 <?php
+header("Access-Control-Allow-Origin: *"); // Allow all origins
 
 session_start();
 
@@ -7,7 +8,7 @@ include('db_connection.php');
 
 // Check if the user is logged in
 if (!isset($_SESSION['user_id']) || empty($_SESSION['user_id'])) {
-    header('Location: http://127.0.0.1/eureka/features/login/login.html');
+    header('Location: http://localhost:5173/login');
     exit();
 }
 
@@ -37,7 +38,7 @@ try {
 
     // Redirect after successful task creation
     echo "New task created successfully!";
-    header("Location: http://127.0.0.1/eureka/features/dashboard/dashboard.html");
+    header("Location: http://localhost:5173/");
 } catch (PDOException $e) {
     // Handle errors and display a message
     echo "Error: " . $e->getMessage();

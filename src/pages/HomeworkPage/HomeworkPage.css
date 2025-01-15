@@ -1,0 +1,127 @@
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding-bottom: 90px;
+    height: 100%;
+    box-sizing: border-box;
+}
+
+.tasks_container {
+    position: relative;
+    margin-top: 15px;
+    padding-top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: column;
+    width: 90%; /* Adjust width for responsiveness */
+    max-width: 340px;
+    max-height: 390px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    margin-bottom: 20px;
+    scroll-behavior: smooth;
+}
+
+.task_item {
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    overflow: hidden;
+    padding: 10px;
+    height: auto; /* Allow height to adjust dynamically */
+    width: 100%;
+    background-color: var(--primary);
+    border-radius: 5px;
+    box-shadow: var(--shadow);
+    position: relative;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.task_item .logo {
+    padding-left: 10px;
+}
+
+.task_item .logo img {
+    width: 35px;
+}
+
+.task_item .task {
+    padding-left: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+    flex: 1;
+}
+
+.task_item .task .topic p,
+.task_item .task .due_date p {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    font-size: 13px;
+    color: var(--text);
+    font-weight: bold;
+}
+
+.task_item .task .topic span,
+.task_item .task .due_date span {
+    margin-left: 5px;
+    font-weight: 400;
+}
+
+.task_item .next_due_check {
+    display: flex;
+    padding-right: 10px;
+    cursor: pointer;
+}
+
+.task_item .next_due_check i {
+    font-size: 45px;
+    color: var(--secondary);
+}
+
+.task_item.removed {
+    transform: translateX(-100%);
+    opacity: 0;
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+    .tasks_container {
+        width: 100%; /* Expand to fit the screen */
+        max-width: 100%;
+        padding: 0 10px;
+    }
+
+    .task_item {
+        padding: 10px 5px; /* Adjust padding for smaller screens */
+    }
+
+    .task_item .next_due_check i {
+        font-size: 35px; /* Reduce icon size */
+    }
+}
+
+@media (max-width: 480px) {
+    .tasks_container {
+        max-height: 300px; /* Adjust height for very small screens */
+    }
+
+    .task_item {
+        flex-direction: column; /* Stack content vertically */
+        align-items: flex-start;
+    }
+
+    .task_item .logo img {
+        width: 30px; /* Adjust logo size */
+    }
+
+    .task_item .next_due_check i {
+        font-size: 30px;
+    }
+}

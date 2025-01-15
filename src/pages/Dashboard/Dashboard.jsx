@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Header from "../../components/Header/Header.jsx";
 import AddTaskOverlay from "../../components/AddTaskOverlay/AddTaskOverlay.jsx";
 import './Dashboard.css'
+import HomeworkPage from "../HomeworkPage/HomeworkPage.jsx";
 
 
 function Dashboard(){
