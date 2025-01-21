@@ -1,3 +1,5 @@
+
+
 .container {
     display: flex;
     align-items: center;
@@ -33,7 +35,7 @@
     justify-content: center;
     overflow: hidden;
     padding: 10px;
-    height: auto; /* Allow height to adjust dynamically */
+    height: 150px; /* Allow height to adjust dynamically */
     width: 100%;
     background-color: var(--primary);
     border-radius: 5px;
@@ -48,7 +50,7 @@
 .task_item_inner {
     position: relative;
     width: 100%;
-    height: auto;
+    height: 100%;
     transform-style: preserve-3d;
     transition: transform 0.6s ease-in-out;
 }
@@ -58,38 +60,44 @@
 }
 
 
-.task_item_front,
-.task_item_back {
+.task_item_side {
     position: absolute;
     width: 100%;
     height: 100%;
-    backface-visibility: hidden;
-    border-radius: 5px;
-    box-shadow: var(--shadow);
-    padding: 10px;
-}
-
-.task_item_front {
-    background-color: var(--primary);
+    backface-visibility: hidden; /* Hide the opposite side */
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.task_item_back {
-    background-color: var(--secondary);
-    transform: rotateY(180deg);
-    display: flex;
-    flex-direction: column;
     justify-content: center;
-    align-items: flex-start;
-    padding: 15px;
+    align-items: center;
+    border-radius: 5px;
+    box-sizing: border-box;
 }
 
-.task_item_back p {
-    margin: 5px 0;
-    font-size: 14px;
-    color: var(--text-light);
+.task_item_side.front {
+    background-color: var(--primary); /* Styling for the front side */
+    z-index: 2;
+    padding-right: 15px;
+}
+
+.task_item_side.back {
+    transform: rotateY(180deg); /* Position the back initially */
+    z-index: 1;
+    display: inline;
+    align-self: center;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 10px;
+}
+
+.task_item_side.back p {
+    font-weight: bold;
+    font-size: 0.9rem;
+    color: var(--text);
+}
+
+.task_item_side.back span {
+    font-size: 0.9rem;
+    color: var(--text);
+    font-weight: 400;
 }
 
 .task_item .logo {
@@ -97,7 +105,7 @@
     display: flex;
     align-self: center;
     margin-left: 10px;
-    margin-right: 10px;
+    margin-right: 20px;
     transform: translateY(15%);
 }
 
@@ -148,12 +156,138 @@
 .task_item .next_due_check i {
     font-size: 35px !important;
     color: var(--secondary);
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.next_due_check .bx.checked {
+    color: var(--primary);
+    transform: scale(1.2) rotate(360deg);
+}
+
+.next_due_check .bx.hover {
+    transform: scale(1.1);
 }
 
 .task_item.removed {
     transform: translateX(-100%);
     opacity: 0;
 }
+
+/*  checkbox animation */
+
+
+:root {
+    --size: 30;
+    --line-width: 3;
+    --check-green: #00aa1c;
+  }
+  
+  .animation_container {
+    display: inline-block;
+    position: relative;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+  }
+  
+  /* hide default radio button */
+  .animation_container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+  }
+  
+  .checkbox {
+    position: absolute;
+    top: 0;
+    height: calc(var(--size) * 1px);
+    width: calc(var(--size) * 1px);
+    cursor: pointer;
+    color: var(--secondary);
+    border: calc(var(--line-width) * 1px) solid;
+    border-radius: 50%;
+    -webkit-transition: all 0.5s;
+    -moz-transition: all 0.5s;
+    -o-transition: all 0.5s;
+    transition: all 0.5s;
+    transform: translate(-50%, -50%);
+  }
+  
+  .checkmark {
+    position: absolute;
+    top: 0;
+    width: calc(var(--size) * 1px);
+    height: calc(var(--size) * 1px);
+    cursor: pointer;
+    transform: translate(-50%, -50%);
+  }
+  
+  .checkmark::before {
+    position: absolute;
+    left: 0;
+    bottom: calc(var(--size) / 2.5 * 1px);
+    height: calc(var(--line-width) * 1px);
+    width: 0%;
+    background-color: var(--check-green);
+    content: "";
+    transform: translateX(0px) rotate(45deg);
+    transform-origin: left bottom;
+    opacity: 1;
+    -webkit-transition: all 0.5s;
+    -moz-transition: all 0.5s;
+    -o-transition: all 0.5s;
+    transition: all 0.5s;
+    transition-delay: 0.5s;
+  }
+  
+  .checkmark::after {
+    position: absolute;
+    left: calc(var(--size) / 4 * 1px);
+    bottom: calc(var(--size) / 23 * 1px);
+    height: calc(var(--line-width) * 1px);
+    width: 0%;
+    background-color: var(--check-green);
+    content: "";
+    transform: translateX(calc(var(--size) / 8 * 1px)) rotate(-45deg);
+    transform-origin: left bottom;
+    opacity: 1;
+    -webkit-transition: all 0.5s;
+    -moz-transition: all 0.5s;
+    -o-transition: all 0.5s;
+    transition: all 0.5s;
+    transition-delay: 1s;
+  }
+  
+  .animation_container input:checked ~ .checkmark::before {
+    opacity: 1;
+    width: 50%;
+  }
+  
+  .animation_container input:checked ~ .checkmark::after {
+    opacity: 1;
+    width: 100%;
+  }
+  
+  .animation_container input:checked ~ .checkbox {
+    transform: translate(-50%, -50%) scale(1.5);
+    opacity: 0;
+    pointer-events: none;
+  }
+  
+  .animation_container input:not(:checked) ~ .checkmark::before {
+    transition-delay: 0.5s;
+  }
+  
+  .animation_container input:not(:checked) ~ .checkmark::after {
+    transition-delay: 0s;
+  }
+  
+  .animation_container input:not(:checked) ~ .checkbox {
+    transition-delay: 1s;
+  }
+  
+
 
 /* Media Queries */
 @media (max-width: 768px) {
@@ -188,4 +322,10 @@
     .task_item .next_due_check i {
         font-size: 30px;
     }
+    .task_item_side.back {
+       padding-top: 0;
+    }
 }
+
+
+
