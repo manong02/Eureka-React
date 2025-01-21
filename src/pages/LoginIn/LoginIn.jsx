@@ -4,7 +4,7 @@ import './LoginIn.css'
 function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-
+ 
   const handleSubmit = (e) => {
     e.preventDefault();
   
@@ -13,28 +13,33 @@ function Login() {
     formData.append("password", password);
   
     // POST data to the PHP backend (login.php)
-    fetch("http://localhost:8000/backend/login.php", {
+    fetch("http://localhost/backend/login.php", {
       method: "POST",
       body: formData,
+      credentials: "include", // Important to send session cookies
     })
-      .then((response) => response.json()) // Parse JSON response
-      .then((data) => {
-        console.log("Response from backend:", data);
-  
-        if (data.status === "success") {
-          // Handle successful login (e.g., redirect or show message)
-          alert("Logged in successfully");
-          // Redirect to another page after successful login
-          window.location.href = "http://localhost:5173/"; // or any appropriate route
-        } else {
-          // Handle error (e.g., show error message)
-          alert("Error: " + data.message); // Display error message
-        }
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
-  };
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      return response.json(); // Parse JSON response
+    })
+    .then((data) => {
+      console.log("Response from backend:", data);
+
+      if (data.status === "success") {
+        alert("Logged in successfully");
+         // Redirect to another page after successful login
+         window.location.href = "http://localhost:5173"; 
+      } else {
+        alert("Error: " + data.message); // Display backend error message
+      }
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+      alert("Something went wrong. Please try again.");
+    });
+};
 
   return (
     <div className="container">

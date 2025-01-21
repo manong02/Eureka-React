@@ -14,7 +14,7 @@ function SignUp() {
     formData.append("password", password);
 
     // POST data to the PHP backend (signup.php)
-    fetch("http://localhost:8000/backend/signup.php", {
+    fetch("http://localhost/backend/signup.php", {
       method: "POST",
       body: formData,
     })
