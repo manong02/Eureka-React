@@ -1,10 +1,17 @@
 <?php
 
 // Enable CORS
-header("Access-Control-Allow-Origin: *"); // Allow all origins, or replace '*' with 'http://localhost:5173' for a more secure setup
+header("Access-Control-Allow-Origin: http://localhost:5173"); // React app URL
 header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
+header("Access-Control-Allow-Credentials: true"); // Allow credentials
+
 session_start();
+
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    header("HTTP/1.1 204 No Content");
+    exit;
+}
 
 // include database connection
 include('db_connection.php');
@@ -13,6 +20,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // get form data
     $username = htmlspecialchars(filter_input(INPUT_POST, "username", FILTER_SANITIZE_SPECIAL_CHARS));
     $password = htmlspecialchars(filter_input(INPUT_POST, "password", FILTER_SANITIZE_SPECIAL_CHARS));
+
+    error_log("Username: $username"); // Debugging
+    error_log("Password: $password"); // Debugging
 
     // check if fields are empty
     if (empty($username) || empty($password)) {

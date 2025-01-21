@@ -17,19 +17,26 @@ function App() {
   return (
     <Router>
       <Routes>
+
         {/* Route for layout with tabbar */}
         <Route path="/" element={<Layout />}>
+
         {/* Default route is Dashboard */}
-          <Route index element={<Dashboard />} />
-           {/* Homework page route */}
-           <Route
+        <Route index element={<Dashboard />} />
+        
+          {/* Homework page route */}
+          <Route
             path="homeworkpage"
             element={<HomeworkPage openOverlay={openOverlay} isOverlayOpen={isOverlayOpen} closeOverlay={closeOverlay} />}
           />
+
+          {/* end of layout with tabbar */}
         </Route>
+
         {/* Routes for Login and SignUp pages */}
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
+        
       </Routes>
     </Router>
   );

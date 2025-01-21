@@ -13,7 +13,7 @@ const AddTaskOverlay = ({ isOpen, onClose, onTaskCreated }) => {
   
       const taskData = { title, description, subjectId, dueDate };
   
-      fetch("http://localhost:8000/backend/create_task.php", {
+      fetch("http://localhost/backend/create_task.php", {
           method: "POST",
           headers: {
               "Content-Type": "application/json",

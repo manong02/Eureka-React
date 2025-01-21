@@ -1,9 +1,22 @@
 <?php
-header("Access-Control-Allow-Origin: *"); // Allow all origins
-header('Content-Type: application/json'); // Return JSON
+
+ini_set('display_errors', 0); // Disable error reporting for production
+error_reporting(E_ALL); // Still report all errors internally
+
+header("Access-Control-Allow-Origin: http://localhost:5173"); // React app URL
+header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type, Authorization");
+header("Access-Control-Allow-Credentials: true"); // Allow credentials
 
 session_start();
 include('db_connection.php');
+
+
+
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    header("HTTP/1.1 204 No Content");
+    exit;
+}
 
 // Ensure the user is logged in
 if (!isset($_SESSION['user_id'])) {
