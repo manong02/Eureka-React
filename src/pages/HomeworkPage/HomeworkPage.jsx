@@ -36,6 +36,18 @@ const HomeworkPage = () => {
       }
     };
 
+  // function to format the status to be more user-friendly
+  const formatStatus = (status) => {
+    switch(status){
+      case "pending":
+        return "In Progress";
+      case "completed":
+        return "Finished";
+      default:
+        return status.charAt(0).toUpperCase() + status.slice(1);  // Capitalize as fallback
+    }
+  }
+
     // Handle status change when "circle" icon is clicked
   const handleStatusChange = async (taskId, currentStatus) => {
     const newStatus = currentStatus === "pending" ? "completed" : "pending";
@@ -181,7 +193,7 @@ const HomeworkPage = () => {
                         Description: <span className="description">{task.description}</span>
                       </p>
                       <p>
-                        Status: <span className="status">{task.status}</span>
+                        Status: <span className="status">{formatStatus(task.status)}</span>
                       </p>
                     </div>
                  
