@@ -19,19 +19,29 @@ const AddTaskOverlay = ({ isOpen, onClose, onTaskCreated }) => {
               "Content-Type": "application/json",
           },
           body: JSON.stringify(taskData),
+          credentials: "include", // Important to send cookies (session data)
       })
-      .then(response => response.json()) // assuming the response is JSON
-      .then(data => {
-          if (data.success) {
-              console.log('Task created successfully');
-              onTaskCreated(); //notify homeworkpage to reload tasks
-              onClose(); // Close the overlay after successful task creation
-              // Optionally, you can trigger a function to reload tasks here
-          } else {
-              console.error('Failed to create task:', data.message);
+      .then(response => response.text()) // Read the response as text first
+      .then(text => {
+          try {
+              const data = JSON.parse(text); // Try parsing the text as JSON
+              if (data.success) {
+                  console.log('Task created successfully:', data.message);
+                  onTaskCreated(); // Trigger the callback to refresh tasks
+                  onClose(); // Close the overlay
+              } else {
+                  console.error('Failed to create task:', data.message);
+                  alert('Failed to create task: ' + data.message); // Optional error alert
+              }
+          } catch (error) {
+              console.error('Error parsing JSON:', error, 'Response Text:', text);
+              alert('Something went wrong. Please try again.');
           }
       })
-      .catch(error => console.error('Error:', error));
+      .catch(error => {
+          console.error('Error:', error);
+          alert('Something went wrong!'); // Fallback for any network or fetch issues
+      });
   };
 
     if(!isOpen) return null; //do not render overlay if not open

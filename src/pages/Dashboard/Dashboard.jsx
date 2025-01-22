@@ -9,6 +9,11 @@ function Dashboard(){
     
     const[isOverlayOpen, setIsOverlayOpen] = useState(false);
 
+    const handleTaskCreated = () => {
+        console.log('Task created successfully!'); 
+        // Add any additional logic to refresh data or update the UI
+    };
+
     const openOverlay = () => {
         setIsOverlayOpen(true);
     };
@@ -23,7 +28,9 @@ function Dashboard(){
             <Header title="Welcome" onOpenOverlay={openOverlay}/>
 
             {/* The add task overlay */}
-            <AddTaskOverlay isOpen={isOverlayOpen} onClose={closeOverlay}/>
+            <AddTaskOverlay isOpen={isOverlayOpen} 
+                            onClose={closeOverlay}
+                            onTaskCreated={handleTaskCreated}/>
 
             {/* Next due task section */}
             <section className="next_due_container">

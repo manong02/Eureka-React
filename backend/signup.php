@@ -5,7 +5,9 @@ header("Access-Control-Allow-Origin: *"); // Allow all origins, or replace '*' w
 header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
 
+ini_set('session.cookie_domain', 'localhost'); // If you're working on localhost
 session_start();
+$_SESSION['user_id'] = $user_id;  // Set session variable
 
 // Include database connection
 include('db_connection.php');

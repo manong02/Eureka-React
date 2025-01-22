@@ -6,7 +6,9 @@ header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
 header("Access-Control-Allow-Credentials: true"); // Allow credentials
 
+ini_set('session.cookie_domain', 'localhost'); // If you're working on localhost
 session_start();
+
 
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     header("HTTP/1.1 204 No Content");
