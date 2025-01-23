@@ -129,6 +129,7 @@ const HomeworkPage = () => {
                 history: "/src/assets/features/homework/geography.png",
                 geography: "/src/assets/features/homework/geography.png",
                 english: "/src/assets/features/homework/english.png",
+                french: "/src/assets/features/homework/french.png",
                 default: "/src/assets/features/homework/default.png",
               };
 

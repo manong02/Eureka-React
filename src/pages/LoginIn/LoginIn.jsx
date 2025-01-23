@@ -42,7 +42,7 @@ function Login() {
 };
 
   return (
-    <div className="container">
+    <div className="main_container">
       <div className="logo">
         <img src="/src/assets/mainlogo/logo.png" alt="eureka logo" />
       </div>

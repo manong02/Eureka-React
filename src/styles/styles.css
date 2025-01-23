@@ -45,7 +45,7 @@ body {
     width: 100%; /* Takes up full width of the parent */
     max-width: 1200px; /* Optional: set a max width for large screens */
     margin: 0 auto; /* Centers the layout on larger screens */
-    padding: 20px; /* Optional: Add some padding */
+    padding: 20px 20px 0 20px; /* Optional: Add some padding */
     box-sizing: border-box; /* Ensures padding doesn't overflow */
   }
 

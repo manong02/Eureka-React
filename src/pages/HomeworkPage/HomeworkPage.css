@@ -84,8 +84,8 @@
     z-index: 1;
     display: inline;
     align-self: center;
-    padding-left: 10px;
-    margin-top: 5px;
+    height: 100%;
+    padding: 10px;
 }
 
 .task_item_side.back p {
@@ -111,6 +111,7 @@
 
 .task_item .logo img {
     width: 50px;
+    height: 50px;
     object-fit: cover;
 }
 
@@ -298,7 +299,7 @@
     }
 
     .task_item {
-        padding: 10px 5px; /* Adjust padding for smaller screens */
+        padding: 10px 5px;
     }
 
     .task_item .next_due_check i {
@@ -310,20 +311,24 @@
     .tasks_container {
         max-height: 300px; /* Adjust height for very small screens */
     }
+    .task_item .task {
+        gap:0px;
+    }
 
     .task_item .task p {
         font-size: 0.8rem ;
     }
 
     .task_item .logo img {
-        width: 35px; /* Adjust logo size */
+        width: 40px;
+        height: 40px; /* Adjust logo size */
     }
 
     .task_item .next_due_check i {
         font-size: 30px;
     }
     .task_item_side.back {
-       margin-top: 10px;
+       height: 100%;
     }
     .task_item_side.back p,
     .task_item_side.back span{
