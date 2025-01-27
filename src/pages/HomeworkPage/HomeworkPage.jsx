@@ -179,12 +179,6 @@ const HomeworkPage = () => {
                           <span className="checkbox"></span>
                           <span className="checkmark"></span>
                       </label>
-                      {/* <i className={`bx bx-circle ${task.status === "completed" ? "checked" : ""}`}
-                      onClick={(e) => {
-                        e.stopPropagation(); //prevent flipping the card when clicking the icon
-                        handleStatusChange(task.task_id, task.status);
-                      }}
-                      ></i> */}
                   </div>
                     </div>
 

@@ -7,7 +7,75 @@ import HomeworkPage from "../HomeworkPage/HomeworkPage.jsx";
 
 function Dashboard(){
     
+    const [tasks, setTasks] = useState([]);
     const[isOverlayOpen, setIsOverlayOpen] = useState(false);
+
+      // Function to fetch task from the backend
+      const fetchTasks = async () => {
+        setLoading(true);
+        try {
+          const response = await fetch("http://localhost/backend/get_tasks.php", {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            credentials: "include",  // Make sure to include cookies/session info
+          });
+    
+          if (response.ok) {
+            const data = await response.json();
+            // console.log(data); // Debug: Check the data here
+            setTasks(data); // Update state with the fetched tasks
+            setLoading(false);
+          } else {
+            console.log("Failed to fetch tasks:", response.status);
+          }
+        } catch (error) {
+          console.error("Error fetching tasks:", error);
+          setLoading(false);
+        }
+      };
+  
+    // function to format the status to be more user-friendly
+    const formatStatus = (status) => {
+      switch(status){
+        case "pending":
+          return "In Progress";
+        case "completed":
+          return "Finished";
+        default:
+          return status.charAt(0).toUpperCase() + status.slice(1);  // Capitalize as fallback
+      }
+    }
+  
+      // Handle status change when "circle" icon is clicked
+    const handleStatusChange = async (taskId, currentStatus) => {
+      const newStatus = currentStatus === "pending" ? "completed" : "pending";
+  
+      try {
+        const response = await fetch("http://localhost/backend/update_task_status.php", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ task_id: taskId, status: newStatus }),
+        });
+  
+        const data = await response.json();
+        if (data.success) {
+          // Update the task status in the state
+          setTasks((prevTasks) =>
+            prevTasks.map((task) =>
+              task.task_id === taskId ? { ...task, status: newStatus } : task
+            )
+          );
+        } else {
+          console.error(data.message);
+        }
+      } catch (error) {
+        console.error("Error updating task status:", error);
+      }
+    };
 
     const handleTaskCreated = () => {
         console.log('Task created successfully!'); 
@@ -34,6 +102,7 @@ function Dashboard(){
 
             {/* Next due task section */}
             <section className="next_due_container">
+                
                 <div className="logo">
                     <img src="/src/assets/features/dashboard/nextdue.png" alt="a book" />
                 </div>

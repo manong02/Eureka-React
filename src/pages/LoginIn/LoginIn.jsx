@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import './LoginIn.css'
+import { useNavigate } from "react-router-dom";
 
-function Login() {
+function Login( {setIsLoggedIn}) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
  
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -30,7 +32,8 @@ function Login() {
       if (data.status === "success") {
         alert("Logged in successfully");
          // Redirect to another page after successful login
-         window.location.href = "http://localhost:5173"; 
+         setIsLoggedIn(true);
+         navigate("/")
       } else {
         alert("Error: " + data.message); // Display backend error message
       }

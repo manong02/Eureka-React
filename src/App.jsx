@@ -10,6 +10,7 @@ import './styles/styles.css';
 function App() {
 
   const [isOverlayOpen, setIsOverlayOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false); //track login state
 
   const openOverlay = () => setIsOverlayOpen(true);
   const closeOverlay = () => setIsOverlayOpen(false);
@@ -21,8 +22,11 @@ function App() {
         {/* Route for layout with tabbar */}
         <Route path="/" element={<Layout />}>
 
-        {/* Default route is Dashboard */}
-        <Route index element={<Dashboard />} />
+        {/* protected route: if not logged in, redirect to login */}
+
+        {/* Default route is Login */}
+        <Route index 
+        element={isLoggedIn ? <Dashboard/> : <Login setIsLoggedIn={setIsLoggedIn} />} />
         
           {/* Homework page route */}
           <Route
@@ -34,7 +38,7 @@ function App() {
         </Route>
 
         {/* Routes for Login and SignUp pages */}
-        <Route path="/login" element={<Login />} />
+        <Route path="/login" element={<Login setIsLoggedIn={setIsLoggedIn} />} />
         <Route path="/signup" element={<SignUp />} />
         
       </Routes>
