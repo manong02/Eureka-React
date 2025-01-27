@@ -125,6 +125,7 @@ const HomeworkPage = () => {
               // console.log(task);
               const topicImages = {
                 mathematics: "/src/assets/features/homework/maths.png",
+                science: "/src/assets/features/homework/maths.png",
                 literature: "/src/assets/features/homework/literature.png",
                 history: "/src/assets/features/homework/geography.png",
                 geography: "/src/assets/features/homework/geography.png",
