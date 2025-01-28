@@ -1,5 +1,4 @@
 
-
 .container {
     display: flex;
     align-items: center;
@@ -12,110 +11,98 @@
 }
 
 .tasks_container {
-    position: relative;
     margin-top: 15px;
     padding-top: 0;
     display: flex;
-    align-items: center;
-    justify-content: flex-start;
     flex-direction: column;
-    width: 100%; /* Adjust width for responsiveness */
-    max-width: 1000px;
-    max-height: 390px;
+    justify-content: center;
+    align-items: center; /* Align cards in the center */
+    width: 100%; /* Full width for responsiveness */
+    max-width: 1000px; /* Restrict max width for larger screens */
+    max-height: 500px; /* Limit height for scrollable container */
     overflow-y: auto;
-    overflow-x: hidden;
     margin-bottom: 20px;
     scroll-behavior: smooth;
+    box-sizing: border-box;
 }
 
-.task_item {
+.react-card-flip {
+    width: 100%;
+}
+.react-card-front{
+    margin: 0;
+}
+
+.card {
     margin-bottom: 15px;
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
     padding: 10px;
-    max-height: 100%;
-    height: 100px; /* Allow height to adjust dynamically */
-    width: 100%;
+    height: 100px; /* Fixed height */
+    width: calc(100% - 20px); /* Full width with padding accounted for */
+    max-width: 1000px; /* Match the container width */
     background-color: var(--primary);
     border-radius: 5px;
     box-shadow: var(--shadow);
     position: relative;
-    transition: transform 0.3s ease, opacity 0.3s ease;
+    transition: transform 0.3s ease-in-out;
     gap: 15px;
     cursor: pointer;
-    perspective: 1000px;
+    box-sizing: border-box; /* Include padding in width */
 }
 
-.task_item_inner {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    transform-style: preserve-3d;
-    transition: transform 0.6s ease-in-out;
-}
-
-.task_item_inner.flipped {
-    transform: rotateY(180deg);
-}
-
-
-.task_item_side {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    backface-visibility: hidden; /* Hide the opposite side */
+.card-back {
+    margin-bottom: 15px;
     display: flex;
+    align-items: flex-start;
     justify-content: center;
-    align-items: center;
+    flex-direction: column;
+    overflow: hidden;
+    padding: 10px;
+    height: 100px;
+    width: calc(100% - 20px); /* Consistent with .card */
+    max-width: 1000px;
+    background-color: var(--primary);
     border-radius: 5px;
+    box-shadow: var(--shadow);
+    position: relative;
+    transition: transform 0.3s ease-in-out;
+    cursor: pointer;
     box-sizing: border-box;
 }
 
-.task_item_side.front {
-    background-color: var(--primary); /* Styling for the front side */
-    z-index: 2;
-    padding-right: 15px;
-}
 
-.task_item_side.back {
-    transform: rotateY(180deg); /* Position the back initially */
-    z-index: 1;
-    display: inline;
-    align-self: center;
-    height: 100%;
-    padding: 10px;
-}
 
-.task_item_side.back p {
+.card-back p {
     font-weight: bold;
     font-size: 0.9rem;
     color: var(--text);
+    margin: 5px;
 }
 
-.task_item_side.back span {
+.card-back span {
     font-size: 0.9rem;
     color: var(--text);
     font-weight: 400;
 }
 
-.task_item .logo {
+.card .logo {
     width: 20px;
     display: flex;
     align-self: center;
     margin-left: 10px;
-    margin-right: 20px;
-    transform: translateY(15%);
+    margin-right: 10px;
 }
 
-.task_item .logo img {
+.card .logo img {
     width: 50px;
     height: 50px;
     object-fit: cover;
 }
 
-.task_item .task {
+.card .task {
     padding-left: 20px;
     display: flex;
     flex-direction: column;
@@ -124,37 +111,37 @@
     flex: 1;
 }
 
-.task_item .task .description,
-.task_item .task .status {
+.card .task .description,
+.card .task .status {
     display: none;
 }
 
 
-.task_item .task p {
+.card .task p {
     margin: 0;
     font-size: 0.9rem;
     color: var(--text);
     font-weight: bold;
 }
 
-.task_item .task .topic span,
-.task_item .task .description span,
-.task_item .task .title span,
-.task_item .task .status span,
-.task_item .task .due_date span {
+.card .task .topic span,
+.card .task .description span,
+.card .task .title span,
+.card .task .status span,
+.card .task .due_date span {
     margin-left: 5px;
     font-weight: 400;
 }
 
-.task_item .next_due_check {
+.card .next_due_check {
     display: flex;
-    padding-right: 10px;
+    padding-right: 30px;
     align-items: center;
     justify-content: center;
     cursor: pointer;
 }
 
-.task_item .next_due_check i {
+.card .next_due_check i {
     font-size: 35px !important;
     color: var(--secondary);
     transition: transform 0.3s ease, color 0.3s ease;
@@ -169,10 +156,7 @@
     transform: scale(1.1);
 }
 
-.task_item.removed {
-    transform: translateX(-100%);
-    opacity: 0;
-}
+
 
 /*  checkbox animation */
 
@@ -298,11 +282,11 @@
         padding: 0 10px;
     }
 
-    .task_item {
+    .card {
         padding: 10px 5px;
     }
 
-    .task_item .next_due_check i {
+    .card .next_due_check i {
         font-size: 35px; /* Reduce icon size */
     }
 }
@@ -311,27 +295,27 @@
     .tasks_container {
         max-height: 300px; /* Adjust height for very small screens */
     }
-    .task_item .task {
+    .card .task {
         gap:0px;
     }
 
-    .task_item .task p {
+    .card .task p {
         font-size: 0.8rem ;
     }
 
-    .task_item .logo img {
+    .card .logo img {
         width: 40px;
         height: 40px; /* Adjust logo size */
     }
 
-    .task_item .next_due_check i {
+    .card .next_due_check i {
         font-size: 30px;
     }
-    .task_item_side.back {
+    .card.back {
        height: 100%;
     }
-    .task_item_side.back p,
-    .task_item_side.back span{
+    .card-back p,
+    .card-back span{
         font-size: 0.8rem;
     }
 }

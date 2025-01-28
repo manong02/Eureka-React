@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import ReactCardFlip from 'react-card-flip';
 import Header from '../../components/Header/Header.jsx';
 import AddTaskButton from '../../components/AddTaskButton/AddTaskButton.jsx';
 import AddTaskOverlay from '../../components/AddTaskOverlay/AddTaskOverlay';
@@ -8,7 +9,7 @@ const HomeworkPage = () => {
   const [tasks, setTasks] = useState([]);
   const [isOverlayOpen, setIsOverlayOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [flippedTasks, setFlippedTasks] = useState({});
+  const [isFlipped, setIsFlipped] = useState(false);
 
   // Function to fetch task from the backend
     const fetchTasks = async () => {
@@ -87,42 +88,35 @@ const HomeworkPage = () => {
     fetchTasks();
   }, []);
 
+  function flipCard(taskId){
+    setIsFlipped((prev) => ({
+      ...prev,
+      [taskId]: !prev[taskId],
+    }));
+  }
   
 
   // Open and close the task overlay
   const openOverlay = () => setIsOverlayOpen(true);
   const closeOverlay = () => setIsOverlayOpen(false);
 
-  // toggle flip state
-  const handleFlip = (taskId) => {
-    setFlippedTasks((prev) => ({
-      ...prev,
-      [taskId]: !prev[taskId], //toggle flipped state for the task
-    }));
-  };
-
-  return (
-    <div className="container">
-      {/* Pass dynamic title */}
-      <Header title="Homework Tasks" onOpenOverlay={openOverlay} />
-
-      {/* The add task overlay */}
-      <AddTaskOverlay isOpen={isOverlayOpen} 
-                      onClose={closeOverlay} 
-                      onTaskCreated={handleTaskCreated} />
-
-      {/* Loading state */}
-      {loading ? (
-        <p>Loading tasks...</p>  // Display loading message
+   return(
+    <div className='container'>
+      <Header title="Homework Tasks" onOpenOverlay={openOverlay}/>
+      <AddTaskOverlay isOpen={isOverlayOpen}
+                      onClose={closeOverlay}
+                      onTaskCreated={handleTaskCreated}/>
+      
+      
+       {/* Loading state */}
+       {loading ? (
+        <p>Loading tasks...</p> // Display loading message
       ) : (
-
-        <section className="tasks_container">
+        <div className="tasks_container">
           {tasks.length === 0 ? (
-            <p>No tasks available</p>  // Show message if no tasks
+            <p>No tasks available</p> // Show message if no tasks
           ) : (
-
-            tasks.map((task, index) => {
-              // console.log(task);
+            tasks.map((task) => {
               const topicImages = {
                 mathematics: "/src/assets/features/homework/maths.png",
                 science: "/src/assets/features/homework/maths.png",
@@ -134,75 +128,69 @@ const HomeworkPage = () => {
                 default: "/src/assets/features/homework/default.png",
               };
 
-              const topicImage = 
-                topicImages[task.subject_name.toLowerCase()] || topicImages.default;
+            const topicImage = topicImages[task.subject_name.toLowerCase()] || topicImages.default;
 
-              
-                const isFlipped = !!flippedTasks[task.task_id];
-
-              return (
-                <div
-                  className="task_item"
-                  key={index}  
-                  onClick={() => handleFlip(task.task_id)}
-                >
-                  <div 
-                  className={`task_item_inner ${isFlipped ? "flipped" : ""}`}>
-
-                    {/* front side */}
-                    <div className='task_item_side front'>
-                      <div className="logo">
-                         <img src={topicImage} alt={task.subject_name} />
-                      </div>
-                      <div className="task">
-                      <div className="topic">
-                        <p>Topic: <span className="topic">{task.subject_name}</span></p>
-                      </div>
-                      <div className="title">
-                        <p>Title: <span className='title'>{task.title}</span></p>
-                      </div>
-                      <div className="due_date">
-                      <p>Due: <span className="current_due_date">{task.dueDate}</span></p>
-                    </div>
-                    </div>
-                    <div className="next_due_check">
-                      {/* animation container */}
-                      <label className="animation_container">
-                          <input
-                            type="checkbox"
-                            checked={task.status === "completed"}
-                            onChange={(e) => { 
-                              e.stopPropagation(); //prevent flipping the card when clicking the icon
-                              handleStatusChange(task.task_id, task.status);
-                            }}
-                          />
-                          <span className="label"></span>
-                          <span className="checkbox"></span>
-                          <span className="checkmark"></span>
-                      </label>
+            return(
+            <ReactCardFlip flipDirection="horizontal" isFlipped={isFlipped[task.task_id] || false}
+            key={task.task_id}>
+              {/* Front Side */}
+              <div className="card" onClick={() => flipCard(task.task_id)}>
+                <div className="logo">
+                  <img src={topicImage} alt={task.subject_name} />
+                </div>
+                <div className="task">
+                  <div className="topic">
+                    <p>
+                      Topic: <span className="topic">{task.subject_name}</span>
+                    </p>
                   </div>
-                    </div>
-
-                   {/* Back Side */}
-                   <div className="task_item_side back">
-                      <p>
-                        Description: <span className="description">{task.description}</span>
-                      </p>
-                      <p>
-                        Status: <span className="status">{formatStatus(task.status)}</span>
-                      </p>
-                    </div>
-                 
-                    
+                  <div className="title">
+                    <p>
+                      Title: <span className="title">{task.title}</span>
+                    </p>
+                  </div>
+                  <div className="due_date">
+                    <p>
+                      Due: <span className="current_due_date">{task.dueDate}</span>
+                    </p>
                   </div>
                 </div>
-              );
-            })
-          )}
-        </section>
-      )}
+                <div className="next_due_check">
+                  <label className="animation_container">
+                    <input
+                      type="checkbox"
+                      checked={task.status === 'completed'}
+                      onChange={(e) => {
+                        e.stopPropagation(); // Prevent flipping the card when clicking checkbox
+                        handleStatusChange(task.task_id, task.status);
+                      }}
+                    />
+                    <span className="label"></span>
+                    <span className="checkbox"></span>
+                    <span className="checkmark"></span>
+                  </label>
+                </div>
+              </div>
+
+              {/* Back Side */}
+              <div className="card-back" onClick={() => flipCard(task.task_id)}>
+                <p>
+                  Description: <span className="description">{task.description}</span>
+                </p>
+                <p>
+                  Status: <span className="status">{task.status}</span>
+                </p>
+              </div>
+            </ReactCardFlip>
+        );
+      })
+    )}
+      </div>
+    )}
     </div>
-  );
-};
+   );
+
+  };
+  
 
 export default HomeworkPage;

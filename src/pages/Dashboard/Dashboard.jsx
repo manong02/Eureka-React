@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import ReactCardFlip from 'react-card-flip';
 import Header from "../../components/Header/Header.jsx";
 import AddTaskOverlay from "../../components/AddTaskOverlay/AddTaskOverlay.jsx";
 import './Dashboard.css'
@@ -10,7 +11,7 @@ function Dashboard(){
     const [nextTask, setNextTask] = useState(null); //to hold next due task
     const [isOverlayOpen, setIsOverlayOpen] = useState(false);
     const [loading, setLoading] = useState(false);
-    const [flippedTasks, setFlippedTasks] = useState({});
+    const [isFlipped, setIsFlipped] = useState(false);
     
 
     const fetchTasks = async () => {
@@ -58,18 +59,17 @@ function Dashboard(){
     };
 
       
-
      // function to format the status to be more user-friendly
-       const formatStatus = (status) => {
-         switch(status){
-           case "pending":
-             return "In Progress";
-           case "completed":
-             return "Finished";
-           default:
-             return status.charAt(0).toUpperCase() + status.slice(1);  // Capitalize as fallback
-         }
-       }
+     function formatStatus(status) {
+    switch (status) {
+      case "pending":
+        return "In Progress";
+      case "completed":
+        return "Finished";
+      default:
+        return status.charAt(0).toUpperCase() + status.slice(1); // Capitalize as fallback
+    }
+  }
      
          // Handle status change when "circle" icon is clicked
        const handleStatusChange = async (taskId, currentStatus) => {
@@ -111,13 +111,13 @@ function Dashboard(){
        }, []);
      
      
-       // toggle flip state
-       const handleFlip = (taskId) => {
-         setFlippedTasks((prev) => ({
-           ...prev,
-           [taskId]: !prev[taskId], //toggle flipped state for the task
-         }));
-       };
+       function flipCard(taskId){
+        setIsFlipped((prev) => ({
+          ...prev,
+          [taskId]: !prev[taskId],
+        }));
+      }
+      
 
        const topicImages = {
         mathematics: "/src/assets/features/homework/maths.png",
@@ -135,7 +135,7 @@ function Dashboard(){
           ? topicImages[nextTask.subject_name.toLowerCase()] || topicImages.default
           : topicImages.default;
 
-      
+          
 
     return(
         <div className="container">
@@ -155,8 +155,11 @@ function Dashboard(){
               <>
               {/* display next due task */}
               {nextTask ? (
-                <section className="next_due_container">
+                <ReactCardFlip  flipDirection="horizontal"
+                isFlipped={isFlipped[nextTask.task_id] || false}>
                 
+                {/* front side */}
+                <div className="card" onClick={() => flipCard(nextTask.task_id)}>
                 <div className="logo">
                     <img src={topicImage} alt={nextTask.subject_name || "Default"} />
                 </div>
@@ -166,9 +169,9 @@ function Dashboard(){
                       <p className="next_due_dashboard">{nextTask.title}</p>
                       <p className="next_due_dashboard_date">{nextTask.dueDate}</p>
 
-                      <div className="next_due_check">
+                      {/* <div className="next_due_check"> */}
                       {/* animation container */}
-                      <label className="animation_container">
+                      {/* <label className="animation_container">
                           <input
                             type="checkbox"
                             checked={nextTask.status === "completed"}
@@ -181,12 +184,22 @@ function Dashboard(){
                           <span className="checkbox"></span>
                           <span className="checkmark"></span>
                       </label>
+                    </div>    */}
                   </div>
-                    
                 </div>
-                
 
-            </section>
+                {/* back side */}
+                <div className="card-back"  onClick={() => flipCard(nextTask.task_id)}
+              key="back">
+                <p>
+                Description:{" "}
+                <span className="description">{nextTask.description}</span>
+              </p>
+              <p>
+                Status: <span className="status">{nextTask.status}</span>
+              </p>
+                </div>
+            </ReactCardFlip>
               ) : (
                 <p>No tasks available</p> //message if not tasks
               )}
