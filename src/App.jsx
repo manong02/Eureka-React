@@ -17,38 +17,38 @@ function App() {
 
   return (
     <Router>
-      <Routes>
+    <Routes>
+      {/* Routes for Login and SignUp pages (no Tabbar here) */}
+      <Route path="/login" element={<Login setIsLoggedIn={setIsLoggedIn} />} />
+      <Route path="/signup" element={<SignUp />} />
 
-        {/* Route for layout with tabbar */}
-        <Route path="/" element={<Layout />}>
-
-        {/* protected route: if not logged in, redirect to login */}
-
-        {/* Default route is Login */}
-        <Route index 
-        element={isLoggedIn ? <Dashboard/> : <Login setIsLoggedIn={setIsLoggedIn} />} />
-        
-          {/* Homework page route */}
-          <Route
-            path="homeworkpage"
-            element={<HomeworkPage openOverlay={openOverlay} isOverlayOpen={isOverlayOpen} closeOverlay={closeOverlay} />}
-          />
-
-          {/* end of layout with tabbar */}
-        </Route>
-
-        {/* Routes for Login and SignUp pages */}
-        <Route path="/login" element={<Login setIsLoggedIn={setIsLoggedIn} />} />
-        <Route path="/signup" element={<SignUp />} />
-        
-      </Routes>
-    </Router>
+      {/* Routes with Tabbar */}
+      <Route path="/" element={<Layout />}>
+        {/* Protected route: if not logged in, redirect to login */}
+        <Route 
+          index 
+          element={isLoggedIn ? <Dashboard /> : <Login setIsLoggedIn={setIsLoggedIn} />} 
+        />
+        <Route
+          path="homeworkpage"
+          element={
+            <HomeworkPage 
+              openOverlay={openOverlay} 
+              isOverlayOpen={isOverlayOpen} 
+              closeOverlay={closeOverlay} 
+            />
+          }
+        />
+      </Route>
+    </Routes>
+  </Router>
   );
 }
 
 // Layout component for rendering the Tabbar and Outlet for child routes
 function Layout() {
   const location = useLocation();
+  console.log(location.pathname);
 
   return (
     <>

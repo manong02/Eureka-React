@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import './SignUp.css';
 
 function SignUp() {
@@ -89,7 +90,7 @@ function SignUp() {
         <p>
           Already have an account?{" "}
           <span>
-            <a href="/src/pages/LoginIn/LoginIn.jsx">Log in!</a>
+            <Link to="/login">Login</Link>
           </span>
         </p>
         <button type="submit" disabled={!passwordValid}>
