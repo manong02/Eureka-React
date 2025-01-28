@@ -135,6 +135,8 @@ function Dashboard(){
           ? topicImages[nextTask.subject_name.toLowerCase()] || topicImages.default
           : topicImages.default;
 
+      
+
     return(
         <div className="container">
             {/* Pass dynamic title */}

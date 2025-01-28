@@ -1,5 +1,5 @@
 import React, {useState} from "react"
-import { BrowserRouter as Router, Route, Routes, Outlet, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Outlet, useLocation, Navigate } from 'react-router-dom';
 import Tabbar from "./components/Tabbar/Tabbar.jsx"
 import Dashboard from "./pages/Dashboard/Dashboard.jsx";
 import Login from "./pages/LoginIn/LoginIn.jsx";
@@ -27,7 +27,7 @@ function App() {
         {/* Protected route: if not logged in, redirect to login */}
         <Route 
           index 
-          element={isLoggedIn ? <Dashboard /> : <Login setIsLoggedIn={setIsLoggedIn} />} 
+          element={isLoggedIn ? <Dashboard /> : <Navigate to="/login" />} 
         />
         <Route
           path="homeworkpage"
